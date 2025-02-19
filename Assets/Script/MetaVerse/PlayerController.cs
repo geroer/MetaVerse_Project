@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,6 +17,8 @@ public class PlayerController : MonoBehaviour
 
     protected Vector2 movementDirection = Vector2.zero;
     public Vector2 MovementDirection { get { return movementDirection; } }
+
+    private bool isIntract = false;
 
     void Awake()
     {
@@ -46,6 +50,22 @@ public class PlayerController : MonoBehaviour
         animationHandler.Move(direction);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Interact"))
+        {
+            isIntract = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Interact"))
+        {
+            isIntract = false;
+        }
+    }
+
     void OnMove(InputValue inputValue)
     {
         movementDirection = inputValue.Get<Vector2>();
@@ -54,5 +74,13 @@ public class PlayerController : MonoBehaviour
 
     void OnJump(InputValue inputValue)
     {
+    }
+
+    void OnInteract(InputValue inputValue)
+    {
+        if (isIntract)
+        {
+            SceneManager.LoadScene("MiniGameScene");
+        }
     }
 }
