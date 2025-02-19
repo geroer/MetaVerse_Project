@@ -35,7 +35,8 @@ public class GameOverUI : BaseUI
 
     public void OnClickExitButton()
     {
-        SceneManager.UnloadSceneAsync("MiniGameScene");
+        Time.timeScale = 1;
+        SceneManager.LoadScene("MainScene");
     }
 
     public void SetUI(int score, int bestScore)

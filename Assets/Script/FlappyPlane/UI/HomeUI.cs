@@ -22,7 +22,8 @@ public class HomeUI : BaseUI
 
     public void OnClickExitButton()
     {
-        SceneManager.UnloadSceneAsync("MiniGameScene");
+        Time.timeScale = 1;
+        SceneManager.LoadScene("MainScene");
     }
 
     protected override UIState GetUIState()
