@@ -1,18 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     protected Rigidbody2D _rigidbody;
-    private Camera camera;
+    public float speed = 5f;
 
     [SerializeField] private SpriteRenderer characterRenderer;
 
     protected AnimationHandler animationHandler;
 
-    //이동하는 방향
     protected Vector2 movementDirection = Vector2.zero;
     public Vector2 MovementDirection { get { return movementDirection; } }
 
@@ -24,7 +24,6 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        camera = Camera.main;
     }
 
     void Update()
@@ -38,7 +37,7 @@ public class PlayerController : MonoBehaviour
 
     private void Movment(Vector2 direction)
     {
-        direction = direction * 5;
+        direction = direction * speed;
 
         if (direction.x < 0 && !characterRenderer.flipX) characterRenderer.flipX = true;
         else if (direction.x > 0 && characterRenderer.flipX) characterRenderer.flipX = false;
