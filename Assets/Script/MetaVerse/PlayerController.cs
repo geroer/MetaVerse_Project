@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isIntract)
         {
-            SceneManager.LoadScene("MiniGameScene");
+            SceneManager.LoadSceneAsync("MiniGameScene");
         }
     }
 }

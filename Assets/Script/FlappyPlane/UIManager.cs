@@ -3,30 +3,59 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+public enum UIState
+{
+    Home,
+    Game,
+    GameOver,
+}
+
 public class UIManager : MonoBehaviour
 {
-    public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI restartText;
+    static UIManager instance;
 
-    // Start is called before the first frame update
-    void Start()
+    public static UIManager Instance {  get { return instance; } }
+
+    HomeUI homeUI;
+    GameUI gameUI;
+    GameOverUI gameOverUI;
+    UIState currentState;
+
+    private void Awake()
     {
-        if (restartText == null)
-            Debug.LogError("restart text is null");
+        homeUI = GetComponentInChildren<HomeUI>(true);
+        homeUI.Init(this);
+        gameUI = GetComponentInChildren<GameUI>(true);
+        gameUI.Init(this);
+        gameOverUI = GetComponentInChildren<GameOverUI>(true);
+        gameOverUI.Init(this);
 
-        if (scoreText == null)
-            Debug.LogError("score text is null");
-
-        restartText.gameObject.SetActive(false);
+        ChangeState(UIState.Home);
     }
 
-    public void SetRestart()
+    public void SetPlayGame()
     {
-        restartText.gameObject.SetActive(true);
+        Time.timeScale = 1;
+        ChangeState(UIState.Game);
+    }
+
+    public void SetGameOver(int score, int bestScore)
+    {
+        Time.timeScale = 0;
+        gameOverUI.SetUI(score, bestScore);
+        ChangeState(UIState.GameOver);
     }
 
     public void UpdateScore(int score)
     {
-        scoreText.text = score.ToString();
+        gameUI.SetUI(score);
+    }
+
+    public void ChangeState(UIState state)
+    {
+        currentState = state;
+        homeUI.SetActive(currentState);
+        gameUI.SetActive(currentState);
+        gameOverUI.SetActive(currentState);
     }
 }

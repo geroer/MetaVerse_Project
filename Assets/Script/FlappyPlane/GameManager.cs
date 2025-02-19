@@ -1,15 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     static GameManager gameManager;
-
     public static GameManager Instance { get { return gameManager; } }
 
     private int currentScore = 0;
+    private int bestScore = 0;
+    public static bool isFirstLoading = true;
+
+    private const string BestScoreKey = "BestScore";
 
     UIManager uiManager;
 
@@ -23,24 +28,39 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        uiManager.UpdateScore(0);    
+        bestScore = PlayerPrefs.GetInt(BestScoreKey, 0);
+
+        Time.timeScale = 0;
+
+        if (!isFirstLoading)
+        {
+            StartGame();
+            uiManager.UpdateScore(0);
+        }
+        else
+        {
+            isFirstLoading = false;
+        }
+    }
+    
+    public void StartGame()
+    {
+        uiManager.SetPlayGame();
     }
 
     public void GameOver()
     {
-        Debug.Log("Game Over");
-        uiManager.SetRestart();
-    }
-
-    public void RestartGame()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); //현재 켜져있는 scene의 이름 사용
+        if (bestScore < currentScore)
+        {
+            bestScore = currentScore;
+            PlayerPrefs.SetInt(BestScoreKey, bestScore);
+        }
+        uiManager.SetGameOver(currentScore, bestScore);
     }
 
     public void AddScroe(int score)
     {
         currentScore += score;
-        Debug.Log("Score: " + currentScore);
         uiManager.UpdateScore(currentScore);
     }
 
