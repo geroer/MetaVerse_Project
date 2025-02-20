@@ -28,8 +28,6 @@ public class BgLooper : MonoBehaviour
     //충돌한 오브젝트를 랜덤 배치
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Triggerd:" + collision.name);
-
         if ( collision.CompareTag("BackGround"))
         {
             float widthOfBgObject = ((BoxCollider2D)collision).size.x;   //Collider2D는 BoxCollider2D의 size를 갖고 올 수 없어서 형변환 후 갖고오도록 함
