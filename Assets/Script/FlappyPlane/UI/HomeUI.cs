@@ -22,6 +22,7 @@ public class HomeUI : BaseUI
 
     public void OnClickExitButton()
     {
+        GameManager.isFirstLoading = true;
         Time.timeScale = 1;
         SceneManager.LoadScene("MainScene");
     }
